@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.GroupChatApp" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/Outer_Space</item>
+        <item name="colorPrimaryVariant">@color/Outer_Space</item>
+        <item name="colorOnPrimary">@color/Snow</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/Voilet</item>
+        <item name="colorSecondaryVariant">@color/Voilet</item>
+        <item name="colorOnSecondary">@color/Snow</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:ambientShadowAlpha">1</item>
+<!--        <item name="android:spotShadowAlpha">1</item>-->
+    </style>
+</resources>
