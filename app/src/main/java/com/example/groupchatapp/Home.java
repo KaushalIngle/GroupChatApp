@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.View;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,19 +29,31 @@ public class Home extends AppCompatActivity {
         actionBar.setElevation(20);
 //        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5D2940")));
         List<String> list = Arrays.asList("Group 1", "Poop Flingers", "Potato Farmers", "Casual Vegans", "Dallas Mavericks", "Slumdog Millionaires", "Plant Parents", "D", "Tomato Receipes", "Totally unsafe and Unwarranted");
+
+
         RecyclerView homerview = (RecyclerView) findViewById(R.id.homerecycler);
         HomeAdapter adapter = new HomeAdapter(list);
         homerview.setAdapter(adapter);
         homerview.setLayoutManager(new LinearLayoutManager(this));
-//        LinearLayout homelinear = findViewById(R.id.homelinear);
-//
-//        for (int i = 0; i < 10; i++) {
-//            homelinear.addView(home_group);
-//        }
+        ItemClickSupport.addTo(homerview).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        // do stuff
+                        Log.d("BUTTONS", "User tapped the "+position+" button on the Home Activity");
+                        switchtoChatActivity();
+                        finish();
+                    }
+                }
+        );
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.game_menu, menu);
+        inflater.inflate(R.menu.home_menu, menu);
         return true;
+    }
+    private void switchtoChatActivity() {
+        Intent switchActivityIntent = new Intent(this, Chat.class);
+        startActivity(switchActivityIntent);
     }
 }
