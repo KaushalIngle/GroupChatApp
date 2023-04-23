@@ -42,7 +42,7 @@ public class Home extends AppCompatActivity {
                         // do stuff
                         Log.d("BUTTONS", "User tapped the "+position+" button on the Home Activity");
                         switchtoChatActivity();
-                        finish();
+//                        finish();
                     }
                 }
         );
@@ -52,6 +52,12 @@ public class Home extends AppCompatActivity {
         inflater.inflate(R.menu.home_menu, menu);
         return true;
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
     private void switchtoChatActivity() {
         Intent switchActivityIntent = new Intent(this, Chat.class);
         startActivity(switchActivityIntent);

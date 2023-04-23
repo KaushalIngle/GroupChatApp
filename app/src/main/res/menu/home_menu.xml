@@ -7,6 +7,9 @@
     <item android:id="@+id/newgroup"
         android:icon="@drawable/logo"
         android:title="Create New Group" />
+    <item android:id="@+id/personal"
+        android:icon="@drawable/logo"
+        android:title="Create Personal Chat" />
     <item android:id="@+id/logout"
         android:icon="@drawable/logo"
         android:title="Logout" />

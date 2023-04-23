@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import org.json.JSONArray;
@@ -25,7 +28,6 @@ public class Chat extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar(); // or getActionBar();
         actionBar.setTitle("Group NAme");
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_USE_LOGO);
-        actionBar.setLogo(R.drawable.logoactionbar);
         actionBar.setElevation(20);
 
 
@@ -70,7 +72,17 @@ public class Chat extends AppCompatActivity {
             LinearLayoutManager llm = new LinearLayoutManager(this);
             llm.setReverseLayout(true);
             chatrview.setLayoutManager(llm);
-
+            ItemClickSupport.addTo(chatrview).setOnItemClickListener(
+                    new ItemClickSupport.OnItemClickListener() {
+                        @Override
+                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                            // do stuff
+                            Log.d("BUTTONS", "User tapped the "+position+" button on the Chat Activity");
+                            deleteChat(position);
+//                            finish();
+                        }
+                    }
+            );
         } catch (JSONException e) {
             Log.d("exception",e.toString());
         }
@@ -82,6 +94,32 @@ public class Chat extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.chat_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.manage:
+                switchtoGroupActivity();
+                return true;
+            case R.id.media:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void switchtoGroupActivity() {
+        Intent switchActivityIntent = new Intent(this, Group.class);
+        startActivity(switchActivityIntent);
+//        finish();
+    }
+    private void deleteChat(int position){
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
         return true;
     }
 }
