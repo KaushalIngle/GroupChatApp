@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +27,15 @@ public class Group extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP);
 
         actionBar.setElevation(20);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("UTA Group Chat", 0); // 0 - for private mode
+        String JWT = pref.getString("JWT", null); // getting String
+        if (JWT == null){
+            switchtoLoginActivity();
+            finish();
+        }
+
+
         JSONObject memberlist= null;
 
         try {
@@ -81,5 +92,16 @@ public class Group extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+    private void switchtoLoginActivity() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("UTA Group Chat", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+
+
+        Intent switchActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(switchActivityIntent);
+        finish();
     }
 }
