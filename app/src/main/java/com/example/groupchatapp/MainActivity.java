@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +18,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("UTA Group Chat", 0); // 0 - for private mode
+
+
+        String JWT = pref.getString("JWT", null); // getting String
+            if (JWT != null){
+                switchtoHomeActivity();
+                finish();
+            }
+        SharedPreferences.Editor editor = pref.edit();
+
+
+
+
+
         Button LoginButton = findViewById(R.id.login_button);
         LoginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("BUTTONS", "User tapped the Login Button on the Login Activity");
+                editor.putString("JWT", "string value"); // Storing string
+                editor.commit(); // commit changes
                 switchtoHomeActivity();
                 finish();
             }

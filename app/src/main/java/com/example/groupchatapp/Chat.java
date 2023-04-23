@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +31,13 @@ public class Chat extends AppCompatActivity {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_USE_LOGO);
         actionBar.setElevation(20);
 
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("UTA Group Chat", 0); // 0 - for private mode
+        String JWT = pref.getString("JWT", null); // getting String
+        if (JWT == null){
+            switchtoLoginActivity();
+            finish();
+        }
 
         JSONObject chatlist= null;
 
@@ -72,14 +80,15 @@ public class Chat extends AppCompatActivity {
             LinearLayoutManager llm = new LinearLayoutManager(this);
             llm.setReverseLayout(true);
             chatrview.setLayoutManager(llm);
-            ItemClickSupport.addTo(chatrview).setOnItemClickListener(
-                    new ItemClickSupport.OnItemClickListener() {
+            ItemClickSupport.addTo(chatrview).setOnItemLongClickListener(
+                    new ItemClickSupport.OnItemLongClickListener() {
                         @Override
-                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        public boolean onItemLongClicked(RecyclerView recyclerView, int position, View v) {
                             // do stuff
-                            Log.d("BUTTONS", "User tapped the "+position+" button on the Chat Activity");
+                            Log.d("BUTTONS", "User long tapped the "+position+" button on the Chat Activity");
                             deleteChat(position);
 //                            finish();
+                            return true;
                         }
                     }
             );
@@ -122,4 +131,17 @@ public class Chat extends AppCompatActivity {
         finish();
         return true;
     }
+
+    private void switchtoLoginActivity() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("UTA Group Chat", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.clear();
+        editor.commit();
+
+
+        Intent switchActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(switchActivityIntent);
+        finish();
+    }
+
 }
