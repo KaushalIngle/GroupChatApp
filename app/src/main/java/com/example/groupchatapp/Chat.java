@@ -359,7 +359,7 @@ public class Chat extends AppCompatActivity {
                         finish();
                         }
                         
-                    }, 1000);
+                    }, 2000);
 
     }
 
