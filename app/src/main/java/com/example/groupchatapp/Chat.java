@@ -1,15 +1,24 @@
 package com.example.groupchatapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,11 +35,20 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.androidnetworking.interfaces.UploadProgressListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Chat extends AppCompatActivity {
     String JWT;
@@ -91,6 +110,8 @@ public class Chat extends AppCompatActivity {
             Log.d("exception",e.toString());
         }
         updateView(chatlist);
+
+
         Button sendButton = findViewById(R.id.sendbutton);
 
         EditText messageHolder = findViewById(R.id.edit_gchat_message);
@@ -153,6 +174,7 @@ public class Chat extends AppCompatActivity {
                                 });
     }
     private void updateView(JSONObject chatlist) {
+        Log.d("in updateView", "d");
             RecyclerView chatrview = (RecyclerView) findViewById(R.id.chatrecycler);
             JSONArray chatarray = new JSONArray();
             try {
@@ -233,17 +255,97 @@ public class Chat extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.media:
+                imageChooser();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    private void imageChooser()
+    {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        launchSomeActivity.launch(i);
+    }
+
+    ActivityResultLauncher<Intent> launchSomeActivity
+            = registerForActivityResult(
+            new ActivityResultContracts
+                    .StartActivityForResult(),
+            result -> {
+                if (result.getResultCode()
+                        == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // do your operation from here....
+                    if (data != null
+                            && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        Log.d("uri",selectedImageUri.toString());
+                        upload(selectedImageUri);
+
+
+                    }
+                }
+            });
     private void switchtoGroupActivity() {
         Intent switchActivityIntent = new Intent(this, Group.class);
         switchActivityIntent.putExtra("message", groupName);
         startActivity(switchActivityIntent);
 //        finish();
     }
+
+    private void upload(Uri image){
+        File f = new File(image.toString());
+        try {
+            f = getFile(getApplicationContext(), image);
+        } catch (IOException e) {
+            Log.d("io","io");
+            }
+        AndroidNetworking.upload("http://10.0.2.2:3000/upload")
+                .addMultipartFile("file",f)
+                .addMultipartParameter("chat",groupName)
+                .addMultipartParameter("JWT",JWT)
+                .setTag("uploadTest")
+                .setPriority(Priority.HIGH)
+                .build()
+                .setUploadProgressListener(new UploadProgressListener() {
+                    @Override
+                    public void onProgress(long bytesUploaded, long totalBytes) {
+                        // do anything with progress
+                    }
+                })
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        try {
+                            if( response.getBoolean("success")){
+                                Snackbar snack = Snackbar.make(findViewById(R.id.main),"Media Uploaded",Snackbar.LENGTH_SHORT);
+                                snack.show();
+
+
+                            }
+                        } catch (JSONException e) {
+                            Log.d("dd","af");
+                        }
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        Log.d("FS",error.toString());
+                    }
+                });
+
+        finish();
+        startActivity(getIntent());
+
+    }
+
+
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -297,7 +399,6 @@ public class Chat extends AppCompatActivity {
                                         if (response.getBoolean("success")) {
                                             Snackbar snack = Snackbar.make(findViewById(R.id.main),"Message Deleted",Snackbar.LENGTH_SHORT);
                                             snack.show();
-                                            finish();
                                         }
                                     } catch (JSONException e) {
 
@@ -335,5 +436,39 @@ public class Chat extends AppCompatActivity {
 
 
     }
+    public static File getFile(Context context, Uri uri) throws IOException {
+        File destinationFilename = new File(context.getFilesDir().getPath() + File.separatorChar + queryName(context, uri));
+        try (InputStream ins = context.getContentResolver().openInputStream(uri)) {
+            createFileFromStream(ins, destinationFilename);
+        } catch (Exception ex) {
+            Log.e("Save File", ex.getMessage());
+            ex.printStackTrace();
+        }
+        return destinationFilename;
+    }
 
+    public static void createFileFromStream(InputStream ins, File destination) {
+        try (OutputStream os = new FileOutputStream(destination)) {
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = ins.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+            os.flush();
+        } catch (Exception ex) {
+            Log.e("Save File", ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    private static String queryName(Context context, Uri uri) {
+        Cursor returnCursor =
+                context.getContentResolver().query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
+    }
 }
