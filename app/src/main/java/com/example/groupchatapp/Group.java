@@ -26,6 +26,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Group extends AppCompatActivity {
     JSONObject memberlist;
     String JWT;
@@ -58,7 +61,7 @@ public class Group extends AppCompatActivity {
                             "\"members\" : " +
                             "[" +
                             "{" +
-                            "\"name\" : \"Kaushal\"," +
+                            "\"name\" : \"Chilli\"," +
                             "\"isAdmin\" : true,"+
                             "\"isSelf\" : true"+
                             "}," +
@@ -107,7 +110,7 @@ public class Group extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("http://10.0.2.2:3000/leaveGroup")
+                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/leaveGroup")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)
@@ -120,9 +123,25 @@ public class Group extends AppCompatActivity {
                                     Log.d("f","f");
                                     try {
                                         if (response.getBoolean("success")) {
-                                            Snackbar snack = Snackbar.make(findViewById(R.id.main),"Message Deleted",Snackbar.LENGTH_SHORT);
+                                            Snackbar snack = Snackbar.make(findViewById(R.id.main),"Group Deleted",Snackbar.LENGTH_SHORT);
                                             snack.show();
-                                            finish();
+                                            
+
+
+                                            new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        switchtoHomeActivity();   
+                        finish();
+                        }
+                        
+                    }, 1000);
+                                            
+
+                                            
                                         }
                                     } catch (JSONException e) {
 
@@ -147,8 +166,17 @@ public class Group extends AppCompatActivity {
                                 }
                             });
 
-                                            finish();
-                startActivity(getIntent());
+                                              new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
     }
     private void addmember(String email){
         JSONObject reqObject = new JSONObject();
@@ -158,7 +186,7 @@ public class Group extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("http://10.0.2.2:3000/addMember")
+                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/addMember")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)
@@ -171,9 +199,8 @@ public class Group extends AppCompatActivity {
                                     Log.d("f","f");
                                     try {
                                         if (response.getBoolean("success")) {
-                                            Snackbar snack = Snackbar.make(findViewById(R.id.main),"Message Deleted",Snackbar.LENGTH_SHORT);
+                                            Snackbar snack = Snackbar.make(findViewById(R.id.main),"Member Added",Snackbar.LENGTH_SHORT);
                                             snack.show();
-                                            finish();
                                         }
                                     } catch (JSONException e) {
 
@@ -198,13 +225,22 @@ public class Group extends AppCompatActivity {
                                 }
                             });
 
-                                            finish();
-                startActivity(getIntent());
+                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
     
     }
 
     private void getmembers(String chatname){
-        AndroidNetworking.get("http://10.0.2.2:3000/members")
+        AndroidNetworking.get("https://ef0c-12-184-115-59.ngrok-free.app/members")
                 .addHeaders("Authorization",JWT)
                 .addQueryParameter("groupName",chatname)
                 .setTag("test")
@@ -286,7 +322,7 @@ private void updateView(JSONObject memberlist){
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("http://10.0.2.2:3000/removeMember")
+                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/removeMember")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)
@@ -299,9 +335,8 @@ private void updateView(JSONObject memberlist){
                                     Log.d("f","f");
                                     try {
                                         if (response.getBoolean("success")) {
-                                            Snackbar snack = Snackbar.make(findViewById(R.id.main),"Message Deleted",Snackbar.LENGTH_SHORT);
+                                            Snackbar snack = Snackbar.make(findViewById(R.id.main),"Member Removed",Snackbar.LENGTH_SHORT);
                                             snack.show();
-                                            finish();
                                         }
                                     } catch (JSONException e) {
 
@@ -326,8 +361,17 @@ private void updateView(JSONObject memberlist){
                                 }
                             });
 
-                    switchtoHomeActivity();
-                    finish();
+                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
 
 
                 }

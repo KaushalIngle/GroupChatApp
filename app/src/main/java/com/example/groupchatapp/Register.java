@@ -22,6 +22,9 @@ import com.google.android.material.snackbar.Snackbar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Register extends AppCompatActivity {
     
     EditText FirstName;
@@ -77,7 +80,7 @@ public class Register extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post("http://10.0.2.2:3000/register")
+        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/register")
                 .addJSONObjectBody(reqObject)
                 .setTag("test")
                 .setPriority(Priority.MEDIUM)
@@ -89,8 +92,19 @@ public class Register extends AppCompatActivity {
                         Snackbar snack = Snackbar.make(findViewById(R.id.main),"Successfully Registered",Snackbar.LENGTH_SHORT);
                         snack.show();
                         Log.d("Register", "onResponse: " + response.toString());
+
+
+                                                            new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
                         switchtoLoginActivity();
                         finish();
+                        }
+                        
+                    }, 1000);
                     }
                     // This is the error method it will tell you why the post request failed
                     @Override
@@ -109,6 +123,17 @@ public class Register extends AppCompatActivity {
                         snack.show();
                     }
                 });
+                                                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
         return true;
     }
     private void switchtoLoginActivity() {

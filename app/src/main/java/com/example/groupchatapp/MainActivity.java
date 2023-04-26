@@ -22,6 +22,9 @@ import com.google.android.material.snackbar.Snackbar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
     EditText Email;
     EditText Password;
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post("http://10.0.2.2:3000/login")
+        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/login")
                 .addJSONObjectBody(reqObject)
                 .setTag("test")
                 .setPriority(Priority.MEDIUM)
@@ -107,8 +110,19 @@ public class MainActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = pref.edit();
                                 editor.putString("JWT", response.getString("jwt")); // Storing string
                                 editor.commit(); // commit changes
-                                switchtoHomeActivity();
-                                finish();
+                                                        Snackbar snack = Snackbar.make(findViewById(R.id.main),"Login Successful",Snackbar.LENGTH_SHORT);
+                        snack.show();
+                                                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        switchtoHomeActivity();   
+                        finish();
+                        }
+                        
+                    }, 1000);
                             }
                         } catch (JSONException e) {
 
@@ -132,6 +146,18 @@ public class MainActivity extends AppCompatActivity {
                         snack.show();
                     }
                 });
+
+                                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
 
         return true;
     }

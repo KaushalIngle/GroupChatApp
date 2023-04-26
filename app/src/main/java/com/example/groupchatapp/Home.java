@@ -145,7 +145,7 @@ public class Home extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        AndroidNetworking.post("http://10.0.2.2:3000/createChat")
+                        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/createChat")
                                 .addJSONObjectBody(reqObject)
                                 .setTag("test")
                                 .addHeaders("Authorization", JWT)
@@ -160,7 +160,6 @@ public class Home extends AppCompatActivity {
                                             if (response.getBoolean("success")) {
                                                 Snackbar snack = Snackbar.make(findViewById(R.id.main),"Group Created",Snackbar.LENGTH_SHORT);
                                                 snack.show();
-                                                finish();
                                             }
                                         } catch (JSONException e) {
 
@@ -185,8 +184,17 @@ public class Home extends AppCompatActivity {
                                     }
                                 });
 
+                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
                         finish();
-                        startActivity(getIntent());
+                        }
+                        
+                    }, 1000);
 
                     }
                 })
@@ -200,7 +208,7 @@ public class Home extends AppCompatActivity {
     }
     private void getHome()  {
 
-        AndroidNetworking.get("http://10.0.2.2:3000/allChats")
+        AndroidNetworking.get("https://ef0c-12-184-115-59.ngrok-free.app/allChats")
                  .addHeaders("Authorization", JWT)
                  .setTag("test")
                  .setPriority(Priority.LOW)

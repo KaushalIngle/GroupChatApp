@@ -82,7 +82,7 @@ public class Chat extends AppCompatActivity {
                         "\"chats\" : " +
                             "[" +
                                 "{" +
-                                    "\"name\" : \"Kaushal\"," +
+                                    "\"name\" : \"Chilli\"," +
                                     "\"message\" : \"Hi\","+
                                     "\"isSelf\" : true"+
                                 "}," +
@@ -132,7 +132,7 @@ public class Chat extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-        AndroidNetworking.post("http://10.0.2.2:3000/sendMessage")
+        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/sendMessage")
                                 .addJSONObjectBody(reqObject)
                                 .setTag("test")
                                 .addHeaders("Authorization", JWT)
@@ -145,10 +145,9 @@ public class Chat extends AppCompatActivity {
                                         SharedPreferences pref = getApplicationContext().getSharedPreferences("UTA Group Chat", 0);
                                         try {
                                             if (response.getBoolean("success")) {
-                                                Snackbar snack = Snackbar.make(findViewById(R.id.main),"Group Created",Snackbar.LENGTH_SHORT);
+                                                Snackbar snack = Snackbar.make(findViewById(R.id.main),"Message Sent",Snackbar.LENGTH_SHORT);
                                                 snack.show();
-                                                finish();
-                                                startActivity(getIntent());
+
                                             }
                                         } catch (JSONException e) {
 
@@ -172,6 +171,17 @@ public class Chat extends AppCompatActivity {
                                         snack.show();
                                     }
                                 });
+                                                       new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
     }
     private void updateView(JSONObject chatlist) {
         Log.d("in updateView", "d");
@@ -207,7 +217,7 @@ public class Chat extends AppCompatActivity {
     }
     private void getchat(String groupName) {
         Log.d("here","here");
-        AndroidNetworking.get("http://10.0.2.2:3000/chat")
+        AndroidNetworking.get("https://ef0c-12-184-115-59.ngrok-free.app/chat")
                  .addHeaders("Authorization", JWT)
                  .addQueryParameter("groupName", groupName)
                  .setTag("test")
@@ -252,7 +262,6 @@ public class Chat extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.manage:
                 switchtoGroupActivity();
-                finish();
                 return true;
             case R.id.media:
                 imageChooser();
@@ -305,7 +314,7 @@ public class Chat extends AppCompatActivity {
         } catch (IOException e) {
             Log.d("io","io");
             }
-        AndroidNetworking.upload("http://10.0.2.2:3000/upload")
+        AndroidNetworking.upload("https://ef0c-12-184-115-59.ngrok-free.app/upload")
                 .addMultipartFile("file",f)
                 .addMultipartParameter("chat",groupName)
                 .addMultipartParameter("JWT",JWT)
@@ -340,8 +349,17 @@ public class Chat extends AppCompatActivity {
                     }
                 });
 
-        finish();
-        startActivity(getIntent());
+                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
 
     }
 
@@ -384,7 +402,7 @@ public class Chat extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("http://10.0.2.2:3000/deleteMessage")
+                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/deleteMessage")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)
@@ -423,8 +441,17 @@ public class Chat extends AppCompatActivity {
                                 }
                             });
 
-                    finish();
-                    startActivity(getIntent());
+                    new Timer().schedule(
+                    new TimerTask(){
+                
+                        @Override
+                        public void run(){
+                            
+                        startActivity(getIntent());   
+                        finish();
+                        }
+                        
+                    }, 1000);
 
                 }
             })

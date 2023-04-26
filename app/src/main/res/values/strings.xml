@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Group Chat App</string>
-    <string name="url">http://10.0.2.2:3000</string>
+    <string name="url"> https://d84a-12-184-115-59.ngrok-free.app</string>
 </resources>
