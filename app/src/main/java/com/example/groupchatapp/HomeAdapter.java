@@ -8,13 +8,17 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class HomeAdapter  extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
-    private List<String> homeList;
+    private JSONArray homeList;
 
-    public HomeAdapter(List<String> homelist) {
+    public HomeAdapter(JSONArray homelist) {
         homeList = homelist;
     }
 
@@ -56,19 +60,32 @@ public class HomeAdapter  extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(HomeAdapter.ViewHolder holder, int position) {
         // Get the data model based on position
-        String group = homeList.get(position);
+        JSONObject group = null;
+        try {
+            group = homeList.getJSONObject(position);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         // Set item views based on your views and data model
         TextView groupName = holder.groupName;
-        groupName.setText(group);
+        try {
+            groupName.setText(group.getString("name"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         TextView message = holder.message;
-        message.setText(group);
+        try {
+            message.setText(group.getString("message"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
-        return 10;
+        return homeList.length();
     }
 
 

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,9 +19,11 @@ import org.json.JSONObject;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
 
     private JSONArray members;
+    private boolean isAdmin;
 
-    public GroupAdapter(JSONArray members) {
+    public GroupAdapter(JSONArray members, boolean isAdmin) {
         this.members = members;
+        this.isAdmin = isAdmin;
     }
 
     // Provide a direct reference to each of the views within a data item
@@ -29,13 +32,16 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView memberName;
+        public Button removeMember;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
+            removeMember = (Button) itemView.findViewById(R.id.removeMember);
             memberName = (TextView) itemView.findViewById(R.id.memberName);
+            
         }
     }
 
@@ -60,6 +66,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         JSONObject member;
         try {
             member= members.getJSONObject(position);
+            if (!isAdmin) {
+                holder.removeMember.setVisibility(View.GONE);
+            }
             holder.memberName.setText(member.getString("name"));
         } catch (JSONException e) {
             Log.d("s","exceptions");
@@ -71,7 +80,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
-        return 4;
+        return members.length();
     }
 
 

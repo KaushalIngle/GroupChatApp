@@ -82,6 +82,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             }
         } catch (JSONException e) {
             Log.d("s","exceptions");
+            holder.elsefirstName.setText("Deleted User");
+
         }
 
 
@@ -90,7 +92,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
-        return 4;
+        return chatmessage.length();
     }
 
 
