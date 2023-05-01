@@ -80,7 +80,7 @@ public class Register extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/register")
+        AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/register")
                 .addJSONObjectBody(reqObject)
                 .setTag("test")
                 .setPriority(Priority.MEDIUM)

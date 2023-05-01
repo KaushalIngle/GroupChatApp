@@ -92,7 +92,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     holder.selffirstName.setText(chat.getString("name"));
 
                 }
-                String imageUri = "https://ef0c-12-184-115-59.ngrok-free.app/download/"+chat.getString("message");
+                String imageUri = "https://1cec-12-184-115-59.ngrok-free.app/download/"+chat.getString("message");
 
                 Picasso.with(holder.itemView.getContext()).load(imageUri).into(holder.imageview1);
             }else{

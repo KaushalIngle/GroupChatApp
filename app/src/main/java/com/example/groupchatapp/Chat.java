@@ -132,7 +132,7 @@ public class Chat extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/sendMessage")
+        AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/sendMessage")
                                 .addJSONObjectBody(reqObject)
                                 .setTag("test")
                                 .addHeaders("Authorization", JWT)
@@ -217,7 +217,7 @@ public class Chat extends AppCompatActivity {
     }
     private void getchat(String groupName) {
         Log.d("here","here");
-        AndroidNetworking.get("https://ef0c-12-184-115-59.ngrok-free.app/chat")
+        AndroidNetworking.get("https://1cec-12-184-115-59.ngrok-free.app/chat")
                  .addHeaders("Authorization", JWT)
                  .addQueryParameter("groupName", groupName)
                  .setTag("test")
@@ -314,7 +314,7 @@ public class Chat extends AppCompatActivity {
         } catch (IOException e) {
             Log.d("io","io");
             }
-        AndroidNetworking.upload("https://ef0c-12-184-115-59.ngrok-free.app/upload")
+        AndroidNetworking.upload("https://1cec-12-184-115-59.ngrok-free.app/upload")
                 .addMultipartFile("file",f)
                 .addMultipartParameter("chat",groupName)
                 .addMultipartParameter("JWT",JWT)
@@ -402,7 +402,7 @@ public class Chat extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/deleteMessage")
+                    AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/deleteMessage")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)

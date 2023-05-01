@@ -55,12 +55,20 @@ public class User extends AppCompatActivity {
                 updateProfile(lName.getText().toString(), fName.getText().toString());
             }
         });
+        Button ChangeButton = findViewById(R.id.reset_button);
+        ChangeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("BUTTONS", "User tapped the Update button on the User Activity");
+
+                switchtoPasswordActivity();
+            }
+        });
 
 
     }
 
     private void getProfile(){
-        AndroidNetworking.get("https://ef0c-12-184-115-59.ngrok-free.app/getProfile")
+        AndroidNetworking.get("https://1cec-12-184-115-59.ngrok-free.app/getProfile")
                  .addHeaders("Authorization", JWT)
                  .setTag("test")
                  .setPriority(Priority.LOW)
@@ -111,7 +119,7 @@ public class User extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/updateProfile")
+        AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/updateProfile")
                                 .addJSONObjectBody(reqObject)
                                 .setTag("test")
                                 .addHeaders("Authorization", JWT)
@@ -180,5 +188,9 @@ public class User extends AppCompatActivity {
         Intent switchActivityIntent = new Intent(this, MainActivity.class);
         startActivity(switchActivityIntent);
         finish();
+    }
+    private void switchtoPasswordActivity() {
+        Intent switchActivityIntent = new Intent(this, ChangePassword.class);
+        startActivity(switchActivityIntent);
     }
 }

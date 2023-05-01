@@ -110,7 +110,7 @@ public class Group extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/leaveGroup")
+                    AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/leaveGroup")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)
@@ -186,7 +186,7 @@ public class Group extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/addMember")
+                    AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/addMember")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)
@@ -240,7 +240,7 @@ public class Group extends AppCompatActivity {
     }
 
     private void getmembers(String chatname){
-        AndroidNetworking.get("https://ef0c-12-184-115-59.ngrok-free.app/members")
+        AndroidNetworking.get("https://1cec-12-184-115-59.ngrok-free.app/members")
                 .addHeaders("Authorization",JWT)
                 .addQueryParameter("groupName",chatname)
                 .setTag("test")
@@ -322,7 +322,7 @@ private void updateView(JSONObject memberlist){
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/removeMember")
+                    AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/removeMember")
                             .addJSONObjectBody(reqObject)
                             .setTag("test")
                             .addHeaders("Authorization", JWT)

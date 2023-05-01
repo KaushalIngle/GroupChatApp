@@ -145,7 +145,7 @@ public class Home extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        AndroidNetworking.post("https://ef0c-12-184-115-59.ngrok-free.app/createChat")
+                        AndroidNetworking.post("https://1cec-12-184-115-59.ngrok-free.app/createChat")
                                 .addJSONObjectBody(reqObject)
                                 .setTag("test")
                                 .addHeaders("Authorization", JWT)
@@ -208,7 +208,7 @@ public class Home extends AppCompatActivity {
     }
     private void getHome()  {
 
-        AndroidNetworking.get("https://ef0c-12-184-115-59.ngrok-free.app/allChats")
+        AndroidNetworking.get("https://1cec-12-184-115-59.ngrok-free.app/allChats")
                  .addHeaders("Authorization", JWT)
                  .setTag("test")
                  .setPriority(Priority.LOW)
