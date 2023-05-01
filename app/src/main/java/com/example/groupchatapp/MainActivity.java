@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         Button ForgetButton = findViewById(R.id.forgot_button);
         ForgetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                switchtoForgotActivity();
+                finish();
                 Log.d("BUTTONS", "User tapped the Forgot Button on the Login Activity");
             }
         });
@@ -81,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchtoHomeActivity() {
         Intent switchActivityIntent = new Intent(this, Home.class);
+        switchActivityIntent.putExtra("message", "From: " + MainActivity.class.getSimpleName());
+        startActivity(switchActivityIntent);
+    }
+    private void switchtoForgotActivity() {
+        Intent switchActivityIntent = new Intent(this, ForgotPassword.class);
         switchActivityIntent.putExtra("message", "From: " + MainActivity.class.getSimpleName());
         startActivity(switchActivityIntent);
     }

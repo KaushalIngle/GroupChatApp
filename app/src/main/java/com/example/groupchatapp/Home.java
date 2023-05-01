@@ -132,7 +132,7 @@ public class Home extends AppCompatActivity {
         txtUrl.setPadding(10, 10,10,10);
 
         new AlertDialog.Builder(this,R.style.AlertDialogStyle)
-                .setTitle("Create Chat")
+                .setTitle("Create Group")
                 .setMessage("")
                 .setView(txtUrl)
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
